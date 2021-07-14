@@ -12,6 +12,11 @@
         <LaunchCommand>roslaunch novatel novatel.launch &</LaunchCommand>
         <Topic name="odom">/gps_odom</Topic>
     </Nodes>
+
+    #record path订阅location节点的odom话题
+    <Nodes name="location" >
+        <Topic name="odom">/slam_fused_odom</Topic>  #slam_fused_odom  gps_odom
+    </Nodes>
     
     <Nodes name="rtk" show_status="RTK">
         <LaunchCommand>roslaunch rtk rtk.launch &</LaunchCommand>
@@ -20,27 +25,16 @@
 
     <Nodes name="lidar" show_status="LIDAR">
         <LaunchCommand>roslaunch hesai_lidar p40p.launch &</LaunchCommand>
-        <Topic name="points">/pandar_points</Topic>
+        <Topic name="points">/lslidar_point_cloud</Topic>
     </Nodes>
     
     <Nodes name="camera" show_status="CAMERA">
         <Topic name="img">/image_left</Topic>
     </Nodes>
-
-    <Nodes name="imu">
-        <LaunchCommand>roslaunch novatel novatel_imu.launch & </LaunchCommand>
-        <Topic name="raw_imu">/raw_imu</Topic>
-        <Topic name="corr_imu">/corr_imu</Topic>
-    </Nodes>
-
-    <Nodes name="base_control">
-        <LaunchCommand>roslaunch ant_driver ant_driver.launch &</LaunchCommand>
-        <Topic name="vehicle_state">/vehicleState</Topic>
-    </Nodes>
     
     <Nodes name="driverless">
         <LaunchCommand>roslaunch driverless driverless.launch &</LaunchCommand>
-        <CloseCommand>rosnode kill /driverless_node &</CloseCommand>
+        <CloseCommand>rosnode kill --all && killall -9 rosmaster &</CloseCommand>
     </Nodes>
     
     <Nodes name="killros">
